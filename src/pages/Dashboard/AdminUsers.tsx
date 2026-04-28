@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { 
-  Search, UserPlus, Edit, Trash2, Mail, Shield, Loader2, X, 
+  Search, UserPlus, Trash2, Mail, Shield, Loader2, X, 
   CheckCircle, Lock, Unlock, KeyRound, AlertTriangle 
 } from 'lucide-react';
 import api from '../../services/api';

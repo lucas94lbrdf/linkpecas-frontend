@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Crown, Edit, Save, Loader2, Plus, Trash2 } from 'lucide-react';
+import { Crown, Save, Loader2, Plus, Trash2 } from 'lucide-react';
 import api from '../../services/api';
 
 const AdminPlans: React.FC = () => {

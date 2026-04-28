@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { 
-  FileText, Activity, MousePointer2, Search, Filter, 
-  Download, Loader2, Calendar, Clock, User as UserIcon,
-  Database, Info, AlertCircle, CheckCircle2
+  Activity, MousePointer2, Search, Filter, 
+  Download, Loader2, Clock, User as UserIcon,
+  Database, Info
 } from 'lucide-react';
 import api from '../../services/api';
 

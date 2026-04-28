@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { 
-  Heart, Star, Clock, ArrowUpRight, MessageSquare, 
-  Trash2, ExternalLink, TrendingDown, LayoutDashboard, Loader2 
+  Heart, Star, Clock, 
+  Trash2, TrendingDown, Loader2 
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import api from '../../services/api';

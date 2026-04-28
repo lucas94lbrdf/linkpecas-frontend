@@ -59,14 +59,14 @@ const Placeholder = ({ name }: { name: string }) => (
 );
 
 // Protected Route Wrapper
-const ProtectedRoute = ({ children, role }: { children: React.ReactNode, role?: 'admin' | 'user' }) => {
+const ProtectedRoute = ({ children, role, adminOnly }: { children: React.ReactNode, role?: 'admin' | 'user', adminOnly?: boolean }) => {
   const { user, isAuthenticated } = useAuthStore();
   
   // Se não estiver logado, vai para login
   if (!isAuthenticated) return <Navigate to="/login" replace />;
   
   // Se for uma rota de admin e o usuário não for admin, volta pra home
-  if (role === 'admin' && user?.role !== 'admin') return <Navigate to="/" replace />;
+  if ((role === 'admin' || adminOnly) && user?.role !== 'admin') return <Navigate to="/" replace />;
   
   // Caso contrário, permite o acesso (qualquer logado acessa dashboard comum)
   return <>{children}</>;
@@ -88,9 +88,9 @@ const MainLayout = ({ children }: { children: React.ReactNode }) => (
   </div>
 );
 
-const DashLayout = ({ children }: { children: React.ReactNode }) => {
+const DashLayout = ({ children, type }: { children: React.ReactNode, type?: 'admin' | 'user' }) => {
   const { user } = useAuthStore();
-  const sidebarType = user?.role === 'admin' ? 'admin' : 'user';
+  const sidebarType = type || (user?.role === 'admin' ? 'admin' : 'user');
   return (
     <div className="min-h-screen flex flex-col">
       <Header />

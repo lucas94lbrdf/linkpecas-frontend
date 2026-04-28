@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { Search, Zap, Sun, Moon, LayoutDashboard, Settings, LogOut, ChevronDown, X, Menu } from 'lucide-react';
+import { Search, Zap, Sun, Moon, LayoutDashboard, Settings, LogOut, ChevronDown, X } from 'lucide-react';
 import { useAuthStore } from '../../store/useAuthStore';
 import { useTheme } from '../../hooks/useTheme';
 

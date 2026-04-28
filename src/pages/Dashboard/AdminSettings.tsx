@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Save, Settings, CreditCard, Shield, Webhook, Loader2 } from 'lucide-react';
+import { Save, CreditCard, Shield, Loader2 } from 'lucide-react';
 import Swal from 'sweetalert2';
 
 const AdminSettings: React.FC = () => {

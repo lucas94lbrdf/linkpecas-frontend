@@ -17,7 +17,6 @@ const LinkForm: React.FC = () => {
   const [fetching, setFetching] = useState(false);
   const [categories, setCategories] = useState<Category[]>([]);
   const [manufacturers, setManufacturers] = useState<Manufacturer[]>([]);
-  const [models, setModels] = useState<VehicleModel[]>([]);
   const [allCommunities, setAllCommunities] = useState<any[]>([]);
   const [allMarketplaces, setAllMarketplaces] = useState<any[]>([]);
 

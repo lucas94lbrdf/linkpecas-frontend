@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Search, CheckCircle, XCircle, Trash2, ExternalLink, Loader2, BarChart3 } from 'lucide-react';
+import { Search, CheckCircle, XCircle, ExternalLink, Loader2, BarChart3 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import api from '../../services/api';
 import Swal from 'sweetalert2';

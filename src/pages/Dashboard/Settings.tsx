@@ -37,13 +37,15 @@ const Settings: React.FC = () => {
         shop_description: description
       });
       
+      if (!user) return;
+
       // Update local state
       setUser({
         ...user,
         name,
         shop_name: shopName,
         shop_description: description
-      });
+      } as any);
 
       Swal.fire({
         icon: 'success',
@@ -76,7 +78,7 @@ const Settings: React.FC = () => {
     if (url) {
       try {
         await api.patch('/api/auth/me', { shop_logo: url });
-        setUser({ ...user, shop_logo: url });
+        if (user) setUser({ ...user, shop_logo: url } as any);
         Swal.fire('Sucesso', 'Foto atualizada!', 'success');
       } catch (err) {
         Swal.fire('Erro', 'Falha ao atualizar foto.', 'error');
