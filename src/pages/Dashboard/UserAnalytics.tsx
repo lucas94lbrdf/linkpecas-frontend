@@ -4,8 +4,8 @@ import {
   LineChart, Line, PieChart, Pie, Cell, AreaChart, Area 
 } from 'recharts';
 import { 
-  TrendingUp, Users, MousePointer2, Calendar, Target, 
-  Lock, ArrowUpRight, Zap, Info, MapPin, Smartphone, 
+  TrendingUp, MousePointer2, Calendar, Target, 
+  Lock, ArrowUpRight, Zap, MapPin, Smartphone, 
   Clock, Share2
 } from 'lucide-react';
 import api from '../../services/api';

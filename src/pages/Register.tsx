@@ -70,6 +70,12 @@ const Register: React.FC = () => {
       }
       
       const docDigits = document.replace(/\D/g, '');
+      if (docDigits.length === 11 && !isValidCPF(docDigits)) {
+        setError('CPF inválido. Verifique os números informados.');
+        setLoading(false);
+        return;
+      }
+
       if (docDigits.length !== 11 && docDigits.length !== 14) {
         setError('Documento inválido. Digite o CPF (11 dígitos) ou CNPJ (14 dígitos).');
         setLoading(false);

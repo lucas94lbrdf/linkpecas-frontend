@@ -1,5 +1,5 @@
 import React from 'react';
-import { Shield, FileText, CheckCircle } from 'lucide-react';
+import { FileText, CheckCircle } from 'lucide-react';
 
 const Terms: React.FC = () => {
   return (

@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { Tag, Search, Filter, Loader2, TrendingDown, Percent, X } from 'lucide-react';
-import { useSearchParams, useNavigate } from 'react-router-dom';
+import { Search, Loader2, TrendingDown, Percent, X } from 'lucide-react';
+import { useSearchParams } from 'react-router-dom';
 import ProductCard from '../components/shared/ProductCard';
 import api from '../services/api';
 
 const OffersPublic: React.FC = () => {
   const [searchParams, setSearchParams] = useSearchParams();
-  const navigate = useNavigate();
   
   const q = searchParams.get('q') || '';
   const filter = searchParams.get('category') || 'all';

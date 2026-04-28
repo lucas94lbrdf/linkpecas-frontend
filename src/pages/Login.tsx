@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { Zap, Loader2, Globe, ArrowLeft } from 'lucide-react';
+import { Zap, Loader2, ArrowLeft } from 'lucide-react';
 import { useAuthStore } from '../store/useAuthStore';
 import api from '../services/api';
 import Cookies from 'js-cookie';

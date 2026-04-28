@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { Store, MapPin, Phone, Globe, ShoppingBag, ExternalLink, Loader2, ArrowRight } from 'lucide-react';
+import { Store, MapPin, Phone, Globe, ShoppingBag, Loader2, ArrowRight } from 'lucide-react';
 import api from '../services/api';
 
 const ShopPublic: React.FC = () => {
