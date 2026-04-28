@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { 
-  User, Mail, Camera, Shield, Bell, 
+  User, Mail, Camera, Shield, 
   CreditCard, Save, Loader2, Webhook,
-  Smartphone, Globe, Lock, Trash2, Zap, Target
+  Smartphone, Globe, Lock, Zap, Target
 } from 'lucide-react';
 import { useAuthStore } from '../../store/useAuthStore';
 import api from '../../services/api';

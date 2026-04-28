@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Gift, Ticket, Calendar, CheckCircle, Loader2, Plus, Users } from 'lucide-react';
+import { Gift, Ticket, Calendar, CheckCircle, Loader2, Trash2, Users } from 'lucide-react';
 import api from '../../services/api';
 
 const Promotions: React.FC = () => {

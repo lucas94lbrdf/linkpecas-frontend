@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Store, MapPin, Phone, Globe, Edit, Camera, Save, Loader2 } from 'lucide-react';
+import { Store, MapPin, Phone, Globe, Camera, Save, Loader2 } from 'lucide-react';
 import api from '../../services/api';
 import Swal from 'sweetalert2';
 

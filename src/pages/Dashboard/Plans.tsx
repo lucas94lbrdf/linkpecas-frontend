@@ -150,7 +150,7 @@ const Plans: React.FC = () => {
               className={`gls p-8 flex flex-col relative overflow-hidden transition-all duration-300 border-2 ${
                 plan.popular ? 'border-orange/40 scale-105 shadow-2xl shadow-orange/10 z-10' : 'border-transparent'
               } ${btn.isCurrent ? 'ring-2 ring-offset-0' : ''}`}
-              style={btn.isCurrent ? { ringColor: plan.color } : {}}
+              style={btn.isCurrent ? ({ "--tw-ring-color": plan.color } as React.CSSProperties) : {}}
             >
               {plan.popular && (
                 <div className="absolute top-0 right-0 bg-orange text-white text-[9px] font-black px-4 py-1.5 rounded-bl-xl tracking-widest leading-none">

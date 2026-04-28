@@ -5,8 +5,14 @@ interface User {
   id: string;
   name: string;
   email: string;
-  role: 'user' | 'admin';
+  role: 'user' | 'admin' | 'seller' | 'entusiasta' | 'blocked';
   plan?: string;
+  shop_name?: string;
+  shop_description?: string;
+  shop_logo?: string;
+  shop_slug?: string;
+  phone?: string;
+  document?: string;
 }
 
 interface AuthState {

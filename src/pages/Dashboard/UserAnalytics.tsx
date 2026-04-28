@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { 
-  BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, 
-  LineChart, Line, PieChart, Pie, Cell, AreaChart, Area 
+  XAxis, YAxis, Tooltip, ResponsiveContainer, 
+  PieChart, Pie, Cell, AreaChart, Area 
 } from 'recharts';
 import { 
   TrendingUp, MousePointer2, Calendar, Target, 
@@ -13,7 +13,7 @@ import { useAuthStore } from '../../store/useAuthStore';
 import { Link } from 'react-router-dom';
 
 const UserAnalytics: React.FC = () => {
-  const { user } = useAuthStore();
+  const { user: _user } = useAuthStore();
   const [data, setData] = useState<any>(null);
   const [loading, setLoading] = useState(true);
 
