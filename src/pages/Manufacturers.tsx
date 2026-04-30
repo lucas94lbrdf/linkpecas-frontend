@@ -10,7 +10,7 @@ const Manufacturers: React.FC = () => {
   const [query, setQuery]     = useState('');
 
   useEffect(() => {
-    document.title = 'Montadoras | Auto Marketplace';
+    document.title = 'Montadoras | LinkPeças';
     vehicleService.listManufacturers()
       .then(setItems)
       .catch(console.error)

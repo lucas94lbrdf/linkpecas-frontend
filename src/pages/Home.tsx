@@ -428,7 +428,7 @@ const Home: React.FC = () => {
       <div className="bg-white border-t border-gray-100 mt-8">
         <div className="max-w-7xl mx-auto px-4 py-6">
           <p className="text-center text-xs text-gray-300 font-medium">
-            © 2026 Auto Marketplace · Todos os direitos reservados ·
+            © 2026 LinkPeças · Todos os direitos reservados ·
             <Link to="/termos" className="hover:text-[#FF6200] ml-1">Termos de Uso</Link> ·
             <Link to="/privacidade" className="hover:text-[#FF6200] ml-1">Privacidade</Link>
           </p>

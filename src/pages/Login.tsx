@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { Zap, Loader2, ArrowLeft } from 'lucide-react';
 import { useAuthStore } from '../store/useAuthStore';
 import api from '../services/api';
 import Cookies from 'js-cookie';
+import ReCAPTCHA from 'react-google-recaptcha';
 
 const Login: React.FC = () => {
   const navigate = useNavigate();
@@ -12,6 +13,16 @@ const Login: React.FC = () => {
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [recaptchaKey, setRecaptchaKey] = useState('');
+  const [recaptchaToken, setRecaptchaToken] = useState<string | null>(null);
+
+  useEffect(() => {
+    api.get('/api/public/tracking').then(res => {
+      if (res.data.recaptcha_site_key) {
+        setRecaptchaKey(res.data.recaptcha_site_key);
+      }
+    }).catch(() => {});
+  }, []);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -19,7 +30,13 @@ const Login: React.FC = () => {
     setError('');
 
     try {
-      const { data } = await api.post('/api/auth/login', { email, password });
+      if (recaptchaKey && !recaptchaToken) {
+        setError('Por favor, confirme que você não é um robô.');
+        setLoading(false);
+        return;
+      }
+
+      const { data } = await api.post('/api/auth/login', { email, password, recaptcha_token: recaptchaToken });
       
       Cookies.set('access_token', data.access_token);
       Cookies.set('refresh_token', data.refresh_token);
@@ -90,7 +107,17 @@ const Login: React.FC = () => {
               />
             </div>
 
-            <button 
+            {recaptchaKey && (
+              <div className="flex justify-center py-2">
+                <ReCAPTCHA
+                  sitekey={recaptchaKey}
+                  onChange={(token) => setRecaptchaToken(token)}
+                  theme="dark"
+                />
+              </div>
+            )}
+
+            <button  
               type="submit"
               disabled={loading}
               className="w-full bg-gradient-to-br from-orange to-orange2 text-white font-black py-4 rounded-xl shadow-xl shadow-orange/20 hover:scale-[1.02] active:scale-[0.98] transition-all disabled:opacity-50 disabled:scale-100"

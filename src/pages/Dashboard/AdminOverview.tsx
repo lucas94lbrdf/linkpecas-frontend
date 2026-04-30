@@ -54,7 +54,7 @@ const AdminOverview: React.FC = () => {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-3xl font-black">Painel Administrativo</h1>
-          <p className="opacity-40 text-sm">Visão geral do ecossistema AutoMarket.</p>
+          <p className="opacity-40 text-sm">Visão geral do ecossistema LinkPeças.</p>
         </div>
         <span className="px-3 py-1 rounded-lg bg-emerald-500/10 text-emerald-500 text-[10px] font-black border border-emerald-500/20 uppercase tracking-widest flex items-center gap-1.5">
           <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" /> Live

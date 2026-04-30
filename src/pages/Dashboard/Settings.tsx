@@ -297,7 +297,7 @@ const Settings: React.FC = () => {
            {activeTab === 'Integrações' && (
               <div className="gls p-8 space-y-8 animate-in fade-in slide-in-from-right-4 duration-300">
                  <h3 className="font-bold text-lg">Integrações Externas</h3>
-                 <p className="text-xs opacity-40">Conecte o AutoMarket com suas ferramentas favoritas.</p>
+                 <p className="text-xs opacity-40">Conecte o LinkPeças com suas ferramentas favoritas.</p>
                  
                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     {[

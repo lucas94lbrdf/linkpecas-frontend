@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useParams, useNavigate, Link, useSearchParams } from 'react-router-dom';
 import { Heart, ShoppingCart, ShieldCheck, Truck, Star, ArrowLeft, Loader2, Share2, Sparkles, MapPin, Tag, Globe, AtSign, Camera, MessageCircle, Hash, X, TrendingDown, ExternalLink, CheckCircle2 } from 'lucide-react';
+import { Helmet } from 'react-helmet-async';
 import api from '../services/api';
 import { useAuthStore } from '../store/useAuthStore';
 import Swal from 'sweetalert2';
@@ -156,8 +157,40 @@ const ProductDetails: React.FC = () => {
 
   const allImages = [ad.image, ...(ad.image_urls || [])].filter(Boolean);
 
+  const seoTitle = `${ad.title} - Comprar na LinkPeças`;
+  const seoDescription = ad.description ? ad.description.substring(0, 160) : `Encontre ${ad.title} pelo melhor preço na LinkPeças. As melhores ofertas de peças e acessórios automotivos.`;
+
+  const jsonLd = {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "name": ad.title,
+    "image": allImages,
+    "description": seoDescription,
+    "sku": ad.id,
+    "offers": {
+      "@type": "AggregateOffer",
+      "url": window.location.href,
+      "priceCurrency": "BRL",
+      "lowPrice": ad.all_options && ad.all_options.length > 0 ? Math.min(...ad.all_options.map((o:any)=>o.price)) : ad.price,
+      "highPrice": ad.all_options && ad.all_options.length > 0 ? Math.max(...ad.all_options.map((o:any)=>o.price)) : ad.price,
+      "offerCount": ad.all_options && ad.all_options.length > 0 ? ad.all_options.length : 1
+    }
+  };
+
   return (
     <div className="min-h-screen bg-[var(--bg2)] pb-20 animate-fade-up">
+      <Helmet>
+        <title>{seoTitle}</title>
+        <meta name="description" content={seoDescription} />
+        <meta property="og:title" content={seoTitle} />
+        <meta property="og:description" content={seoDescription} />
+        <meta property="og:image" content={activeImage || allImages[0]} />
+        <meta property="og:type" content="product" />
+        <script type="application/ld+json">
+          {JSON.stringify(jsonLd)}
+        </script>
+      </Helmet>
+
       {/* Top Nav */}
       <div className="max-w-6xl mx-auto px-6 py-6 flex items-center justify-between">
          <button onClick={() => navigate(-1)} className="p-3 rounded-2xl bg-[var(--glass)] border border-[var(--border)] hover:text-orange transition-all flex items-center gap-2 text-xs font-bold uppercase tracking-widest">

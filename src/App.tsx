@@ -21,6 +21,7 @@ import Manufacturers from './pages/Manufacturers';
 import ManufacturerModels from './pages/ManufacturerModels';
 import VehicleOffers from './pages/VehicleOffers';
 import CookieBanner from './components/shared/CookieBanner';
+import TrackingScripts from './components/shared/TrackingScripts';
 import UserOverview from './pages/Dashboard/UserOverview';
 import AdminOverview from './pages/Dashboard/AdminOverview';
 import MyLinks from './pages/Dashboard/MyLinks';
@@ -264,6 +265,7 @@ function App() {
         <Route path="*" element={<MainLayout><Placeholder name="404" /></MainLayout>} />
       </Routes>
       <CookieBanner />
+      <TrackingScripts />
     </BrowserRouter>
   );
 }

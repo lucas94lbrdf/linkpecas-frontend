@@ -31,7 +31,7 @@ const ManufacturerModels: React.FC = () => {
         if (!mfg) return;
         const rows = await vehicleService.listModelsByManufacturer(mfg.id);
         setModels(rows);
-        document.title = `${mfg.name} | Modelos | Auto Marketplace`;
+        document.title = `${mfg.name} | Modelos | LinkPeças`;
       } finally {
         setLoading(false);
       }

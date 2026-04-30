@@ -122,7 +122,7 @@ const Redirect: React.FC = () => {
         {/* Badge de segurança */}
         <div className="mt-8 flex items-center justify-center gap-2 text-[10px] opacity-20">
           <ShieldCheck size={12} />
-          <span>Link verificado pelo Auto Marketplace</span>
+          <span>Link verificado pelo LinkPeças</span>
         </div>
       </div>
     </div>
