@@ -15,6 +15,15 @@ const Login: React.FC = () => {
   const [error, setError] = useState('');
   const [recaptchaKey, setRecaptchaKey] = useState('');
   const [recaptchaToken, setRecaptchaToken] = useState<string | null>(null);
+  const [cooldown, setCooldown] = useState(0);
+
+  useEffect(() => {
+    let timer: any;
+    if (cooldown > 0) {
+      timer = setInterval(() => setCooldown(c => c - 1), 1000);
+    }
+    return () => clearInterval(timer);
+  }, [cooldown]);
 
   useEffect(() => {
     api.get('/api/public/tracking').then(res => {
@@ -44,7 +53,14 @@ const Login: React.FC = () => {
 
       navigate(data.user.role === 'admin' ? '/admin/dashboard' : '/dashboard');
     } catch (err: any) {
-      setError(err.response?.data?.detail || 'Falha no login. Verifique suas credenciais.');
+      if (err.response?.status === 429) {
+        const retry = parseInt(err.response?.headers?.['retry-after'] || '3', 10);
+        setCooldown(retry);
+        setError(`Muitas tentativas. Tente novamente em ${retry} segundos.`);
+      } else {
+        setError(err.response?.data?.detail || 'Falha no login. Verifique suas credenciais.');
+        setCooldown(3); // cooldown padrão após erro comum
+      }
     } finally {
       setLoading(false);
     }
@@ -119,10 +135,10 @@ const Login: React.FC = () => {
 
             <button  
               type="submit"
-              disabled={loading}
+              disabled={loading || cooldown > 0}
               className="w-full bg-gradient-to-br from-orange to-orange2 text-white font-black py-4 rounded-xl shadow-xl shadow-orange/20 hover:scale-[1.02] active:scale-[0.98] transition-all disabled:opacity-50 disabled:scale-100"
             >
-              {loading ? <Loader2 size={20} className="animate-spin mx-auto" /> : 'Acessar Conta'}
+              {loading ? <Loader2 size={20} className="animate-spin mx-auto" /> : (cooldown > 0 ? `Aguarde ${cooldown}s...` : 'Acessar Conta')}
             </button>
           </form>
 

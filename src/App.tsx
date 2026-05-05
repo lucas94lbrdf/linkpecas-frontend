@@ -39,6 +39,7 @@ import AdminSettings from './pages/Dashboard/AdminSettings';
 import AdminCategories from './pages/Dashboard/AdminCategories';
 import AdminLogs from './pages/Dashboard/AdminLogs';
 import AdminVehicles from './pages/Dashboard/AdminVehicles';
+import AdminLinkHealth from './pages/Dashboard/AdminLinkHealth';
 import Shops from './pages/Dashboard/Shops';
 import Offers from './pages/Dashboard/Offers';
 import Promotions from './pages/Dashboard/Promotions';
@@ -48,6 +49,7 @@ import CommunityAdsPage from './pages/CommunityAdsPage';
 import AdminCommunities from './pages/Dashboard/AdminCommunities';
 import AdminMarketplaces from './pages/Dashboard/AdminMarketplaces';
 import AdDetailPage from './pages/Dashboard/AdDetailPage';
+import { NotificationProvider } from './components/shared/NotificationProvider';
 
 // Temporary placeholder for unbuilt pages
 const Placeholder = ({ name }: { name: string }) => (
@@ -117,8 +119,9 @@ function App() {
   }, [isAuthenticated, setUser]);
 
   return (
-    <BrowserRouter>
-      <Routes>
+    <NotificationProvider>
+      <BrowserRouter>
+        <Routes>
         {/* Public Routes */}
         <Route path="/" element={<MainLayout><Home /></MainLayout>} />
         <Route path="/ofertas" element={<MainLayout><OffersPublic /></MainLayout>} />
@@ -255,6 +258,11 @@ function App() {
             <DashLayout><AdminVehicles /></DashLayout>
           </ProtectedRoute>
         } />
+        <Route path="/admin/link-health" element={
+          <ProtectedRoute role="admin">
+            <DashLayout><AdminLinkHealth /></DashLayout>
+          </ProtectedRoute>
+        } />
         <Route path="/admin/settings" element={
           <ProtectedRoute role="admin">
             <DashLayout><AdminSettings /></DashLayout>
@@ -266,7 +274,8 @@ function App() {
       </Routes>
       <CookieBanner />
       <TrackingScripts />
-    </BrowserRouter>
+      </BrowserRouter>
+    </NotificationProvider>
   );
 }
 

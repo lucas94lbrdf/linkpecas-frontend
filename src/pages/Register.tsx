@@ -20,6 +20,15 @@ const Register: React.FC = () => {
   
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [cooldown, setCooldown] = useState(0);
+
+  React.useEffect(() => {
+    let timer: any;
+    if (cooldown > 0) {
+      timer = setInterval(() => setCooldown(c => c - 1), 1000);
+    }
+    return () => clearInterval(timer);
+  }, [cooldown]);
 
   // Máscaras e Validações
   const maskPhone = (value: string) => {
@@ -103,7 +112,14 @@ const Register: React.FC = () => {
         navigate('/offers');
       }
     } catch (err: any) {
-      setError(err.response?.data?.detail || 'Erro ao criar conta.');
+      if (err.response?.status === 429) {
+        const retry = parseInt(err.response?.headers?.['retry-after'] || '3', 10);
+        setCooldown(retry);
+        setError(`Muitas tentativas. Tente novamente em ${retry} segundos.`);
+      } else {
+        setError(err.response?.data?.detail || 'Erro ao criar conta.');
+        setCooldown(3); // cooldown padrão após falha
+      }
     } finally {
       setLoading(false);
     }
@@ -296,10 +312,10 @@ const Register: React.FC = () => {
                   </div>
 
                   <button 
-                    type="submit" disabled={loading}
+                    type="submit" disabled={loading || cooldown > 0}
                     className="w-full bg-slate-900 hover:bg-orange text-white mt-4 font-black text-xs uppercase tracking-[2px] py-4 rounded-xl shadow-xl hover:shadow-orange/20 transition-all disabled:opacity-50 flex items-center justify-center gap-2"
                   >
-                    {loading ? <Loader2 size={18} className="animate-spin mx-auto" /> : 'Finalizar Cadastro'}
+                    {loading ? <Loader2 size={18} className="animate-spin mx-auto" /> : (cooldown > 0 ? `Aguarde ${cooldown}s...` : 'Finalizar Cadastro')}
                   </button>
                 </form>
               </div>

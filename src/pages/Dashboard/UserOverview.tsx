@@ -10,6 +10,7 @@ import StatsCard from '../../components/shared/StatsCard';
 import api from '../../services/api';
 import { useAuthStore } from '../../store/useAuthStore';
 import Swal from 'sweetalert2';
+import LinkHealthStatus from '../../components/dashboard/LinkHealthStatus';
 
 const UserOverview: React.FC = () => {
   const navigate = useNavigate();
@@ -174,6 +175,8 @@ const UserOverview: React.FC = () => {
 
             {/* Quick Actions & Recent */}
             <div className="space-y-6">
+              <LinkHealthStatus />
+              
               <div className="gls p-6">
                 <h3 className="font-bold text-sm mb-6">Ações Rápidas</h3>
                 <div className="grid grid-cols-2 gap-3">

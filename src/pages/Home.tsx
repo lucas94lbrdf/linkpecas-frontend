@@ -8,6 +8,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import api from '../services/api';
 import { vehicleService } from '../services/vehicleService';
 import type { Manufacturer, VehicleModel } from '../services/vehicleService';
+import SearchBar from '../components/shared/SearchBar';
 
 /* ─── tipos ──────────────────────────────────────────────────────────────── */
 interface Product {
@@ -180,24 +181,9 @@ const Home: React.FC = () => {
             <p className="text-white/70 text-sm">Peças, acessórios e produtos de estética com as melhores ofertas</p>
           </div>
 
-          {/* Barra de busca principal */}
+          {/* SearchBar com search-as-you-type */}
           <div className="max-w-2xl mx-auto">
-            <div className="flex bg-white rounded-2xl shadow-2xl shadow-black/20 overflow-hidden">
-              <input
-                value={query}
-                onChange={e => setQuery(e.target.value)}
-                onKeyDown={e => e.key === 'Enter' && handleSearch()}
-                placeholder="Buscar produto, marca ou categoria..."
-                className="flex-1 px-5 py-4 text-gray-700 text-sm outline-none bg-transparent"
-              />
-              <button
-                onClick={handleSearch}
-                className="bg-[#FF6200] hover:bg-[#e55800] text-white px-6 flex items-center gap-2 font-bold text-sm transition-colors"
-              >
-                <Search size={18} />
-                <span className="hidden sm:inline">Buscar</span>
-              </button>
-            </div>
+            <SearchBar placeholder="Buscar produto, marca ou categoria..." />
 
             {/* Tags rápidas */}
             <div className="flex flex-wrap gap-2 mt-4 justify-center">

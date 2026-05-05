@@ -63,7 +63,11 @@ const LinkForm: React.FC = () => {
     condition: 'new',
     warranty: '',
     community_ids: [] as string[],
+    link_status: '',
+    last_link_check_at: ''
   });
+
+  const [testingLink, setTestingLink] = useState(false);
 
   const MARKETPLACES = ['Shopee', 'Mercado Livre', 'Amazon', 'AliExpress', 'Magalu', 'Americanas', 'Site Próprio'];
 
@@ -130,6 +134,8 @@ const LinkForm: React.FC = () => {
             condition: data.condition || 'new',
             warranty: data.warranty || '',
             community_ids: data.communities?.map((c: any) => c.id) || [],
+            link_status: data.link_status || '',
+            last_link_check_at: data.last_link_check_at || ''
           });
           if (data.expires_at) setIsPermanent(false);
           if (data.city || data.state) setIsNational(false);
@@ -243,6 +249,34 @@ const LinkForm: React.FC = () => {
     else if (lowerUrl.includes('americanas.com')) mkt = 'Americanas';
 
     setFormData(prev => ({ ...prev, url: val, marketplace: mkt }));
+  };
+
+  const handleTestLink = async () => {
+    if (!id || !formData.url) return;
+    setTestingLink(true);
+    try {
+      await api.post(`/api/ads/${id}/recheck-link`);
+      Swal.fire({
+        icon: 'success',
+        title: 'Verificação Agendada',
+        text: 'O link está sendo verificado em background.',
+        background: '#0d1117',
+        color: '#fff',
+        confirmButtonColor: '#ff5c00'
+      });
+      // Optionally could set link_status to pending_review here locally
+      setFormData(prev => ({ ...prev, link_status: 'pending_review' }));
+    } catch (err) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Erro',
+        text: 'Falha ao testar o link.',
+        background: '#0d1117',
+        color: '#fff'
+      });
+    } finally {
+      setTestingLink(false);
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -380,7 +414,28 @@ const LinkForm: React.FC = () => {
                    placeholder="https://shopee.com.br/..." 
                    className="bg-transparent border-none outline-none text-sm w-full text-blue-400"
                  />
+                 {id && (
+                   <button
+                     type="button"
+                     onClick={handleTestLink}
+                     disabled={testingLink}
+                     className="px-3 py-1 bg-orange/10 text-orange rounded-lg text-[10px] font-bold uppercase tracking-widest hover:bg-orange/20 transition-all disabled:opacity-50 flex items-center gap-1 whitespace-nowrap"
+                   >
+                     {testingLink ? <Loader2 size={12} className="animate-spin" /> : 'Testar Link'}
+                   </button>
+                 )}
               </div>
+              {id && formData.link_status && (
+                <div className="flex items-center gap-1.5 ml-2 mt-1">
+                  {formData.link_status === 'active' && <CheckCircle2 size={12} className="text-green-500" />}
+                  {formData.link_status === 'unavailable' && <X size={12} className="text-red-500" />}
+                  {formData.link_status === 'error' && <X size={12} className="text-yellow-500" />}
+                  {formData.link_status === 'pending_review' && <Loader2 size={12} className="text-yellow-500 animate-spin" />}
+                  <span className="text-[10px] font-bold uppercase tracking-widest opacity-50">
+                    Status: {formData.link_status} {formData.last_link_check_at ? `(Última ref: ${new Date(formData.last_link_check_at).toLocaleString()})` : ''}
+                  </span>
+                </div>
+              )}
             </div>
           </div>
         </div>

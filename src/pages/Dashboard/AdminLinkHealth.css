@@ -1,0 +1,71 @@
+.lh-grid { display: grid; gap: 1rem; }
+.lh-grid-4 { grid-template-columns: repeat(4, 1fr); }
+.lh-grid-2 { grid-template-columns: repeat(2, 1fr); }
+@media (max-width: 1024px) { .lh-grid-4 { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 640px) { .lh-grid-4, .lh-grid-2 { grid-template-columns: 1fr; } }
+
+.lh-health-badge {
+  font-size: 2rem; font-weight: 900; line-height: 1;
+}
+.lh-health-green { color: #10b981; }
+.lh-health-yellow { color: #f59e0b; }
+.lh-health-red { color: #ef4444; }
+
+.lh-table { width: 100%; text-align: left; border-collapse: collapse; }
+.lh-table th {
+  padding: 0.75rem 0.5rem; font-size: 9px; text-transform: uppercase;
+  letter-spacing: 2px; opacity: 0.4; font-weight: 900;
+  border-bottom: 1px solid var(--border);
+}
+.lh-table td {
+  padding: 0.75rem 0.5rem; font-size: 12px;
+  border-bottom: 1px solid var(--border);
+}
+.lh-table tr:hover { background: rgba(255,255,255,0.03); }
+
+.lh-signal-chip {
+  display: inline-flex; align-items: center; gap: 4px;
+  padding: 2px 8px; border-radius: 6px; font-size: 9px;
+  font-weight: 800; text-transform: uppercase;
+}
+
+.lh-modal-overlay {
+  position: fixed; inset: 0; z-index: 100;
+  background: rgba(0,0,0,0.7); backdrop-filter: blur(4px);
+  display: flex; align-items: center; justify-content: center;
+}
+.lh-modal {
+  width: 90%; max-width: 720px; max-height: 80vh;
+  overflow-y: auto; border-radius: 20px; padding: 2rem;
+  background: var(--bg2); border: 1px solid var(--border2);
+}
+
+.lh-timeline { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
+.lh-dot {
+  width: 14px; height: 14px; border-radius: 50%; cursor: pointer;
+  transition: transform 0.15s; border: 2px solid transparent;
+}
+.lh-dot:hover { transform: scale(1.4); }
+.lh-dot-ok { background: #10b981; }
+.lh-dot-fail { background: #ef4444; }
+
+.lh-filters { display: flex; gap: 0.5rem; flex-wrap: wrap; align-items: center; }
+.lh-select {
+  background: var(--card); border: 1px solid var(--border);
+  padding: 0.5rem 1rem; border-radius: 12px; font-size: 11px;
+  color: inherit; outline: none; appearance: none;
+  font-weight: 600;
+}
+.lh-select:focus { border-color: var(--orange); }
+
+.lh-btn-force {
+  display: flex; align-items: center; gap: 6px;
+  padding: 0.6rem 1.2rem; border-radius: 12px; font-size: 11px;
+  font-weight: 800; text-transform: uppercase; letter-spacing: 1px;
+  background: linear-gradient(135deg, var(--orange), var(--orange2));
+  color: #fff; border: none; cursor: pointer;
+  transition: transform 0.15s, box-shadow 0.15s;
+  box-shadow: 0 4px 20px rgba(232,90,36,0.3);
+}
+.lh-btn-force:hover { transform: scale(1.03); }
+.lh-btn-force:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }

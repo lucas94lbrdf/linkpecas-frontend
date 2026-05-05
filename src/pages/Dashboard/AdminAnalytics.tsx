@@ -11,6 +11,7 @@ import {
 } from 'lucide-react';
 import StatsCard from '../../components/shared/StatsCard';
 import api from '../../services/api';
+import RateLimitDashboard from './RateLimitDashboard';
 
 const COLORS = ['#ff6b35', '#3b82f6', '#10b981', '#6366f1', '#f59e0b', '#ec4899'];
 
@@ -758,7 +759,11 @@ const AdminAnalytics: React.FC = () => {
                 className="px-3 py-1.5 rounded-lg text-[11px] font-black bg-[var(--glass2)] border border-[var(--border)] disabled:opacity-20 hover:border-orange/30 transition-all">»</button>
             </div>
           </div>
-        )}
+      </div>
+      
+      {/* ── RATE LIMITING DASHBOARD ────────────────────────────────────────────── */}
+      <div className="mt-8">
+        <RateLimitDashboard />
       </div>
 
     </div>

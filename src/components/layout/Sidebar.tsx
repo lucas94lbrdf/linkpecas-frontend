@@ -3,7 +3,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { 
   LayoutDashboard, Link2, PlusCircle, BarChart3, Users, 
   Settings, ShoppingBag, Crown, MessageCircle, Home,
-  Store, Tag, Ticket, FileText, Globe, CarFront
+  Store, Tag, Ticket, FileText, Globe, CarFront, Activity
 } from 'lucide-react';
 import { useAuthStore } from '../../store/useAuthStore';
 
@@ -40,6 +40,7 @@ const Sidebar: React.FC<SidebarProps> = ({ type }) => {
     { icon: Users, label: 'Usuários', path: '/admin/users' },
     { icon: ShoppingBag, label: 'Anúncios', path: '/admin/ads' },
     { icon: CarFront, label: 'Veículos', path: '/admin/vehicles' },
+    { icon: Activity, label: 'Saúde dos Links', path: '/admin/link-health' },
     { icon: Globe, label: 'Marketplaces', path: '/admin/marketplaces' },
     { icon: Tag, label: 'Categorias', path: '/admin/categories' },
     { icon: BarChart3, label: 'Analytics Global', path: '/admin/analytics' },
