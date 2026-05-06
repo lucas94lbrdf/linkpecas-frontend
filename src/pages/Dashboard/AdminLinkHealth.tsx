@@ -37,10 +37,10 @@ const AdminLinkHealth: React.FC = () => {
         api.get('/api/admin/link-health/worst-shops?limit=10'),
       ]);
       setSummary(sumRes.data);
-      setMarketplaces(mktRes.data);
-      setTrend(trendRes.data);
-      setDeactivations(deactRes.data);
-      setWorstShops(shopsRes.data);
+      setMarketplaces(mktRes.data || []);
+      setTrend(trendRes.data || []);
+      setDeactivations(deactRes.data || []);
+      setWorstShops(shopsRes.data || []);
     } catch (err) {
       console.error('Failed to fetch link health data', err);
     } finally {
@@ -89,11 +89,11 @@ const AdminLinkHealth: React.FC = () => {
   const healthColor = (rate: number) => rate >= 90 ? 'lh-health-green' : rate >= 80 ? 'lh-health-yellow' : 'lh-health-red';
 
   // Apply filters
-  const filteredDeact = deactivations
+  const filteredDeact = (deactivations || [])
     .filter(d => !mktFilter || d.marketplace === mktFilter)
     .filter(d => !shopFilter || d.shop_name?.toLowerCase().includes(shopFilter.toLowerCase()));
 
-  const filteredShops = worstShops
+  const filteredShops = (worstShops || [])
     .filter(s => !shopFilter || s.shop_name?.toLowerCase().includes(shopFilter.toLowerCase()));
 
   if (loading) {
@@ -105,7 +105,7 @@ const AdminLinkHealth: React.FC = () => {
     );
   }
 
-  const pieData = marketplaces.map(m => ({ name: m.marketplace, value: m.total }));
+  const pieData = (marketplaces || []).map(m => ({ name: m.marketplace, value: m.total }));
 
   return (
     <div className="space-y-6 animate-fade-up">

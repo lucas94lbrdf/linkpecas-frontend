@@ -20,7 +20,7 @@ const AdminLogs: React.FC = () => {
     setLoading(true);
     try {
       const { data } = await api.get(`/api/admin/logs?type=${logType}`);
-      setLogs(data);
+      setLogs(data || []);
     } catch (err) {
       console.error('Erro ao buscar logs:', err);
     } finally {

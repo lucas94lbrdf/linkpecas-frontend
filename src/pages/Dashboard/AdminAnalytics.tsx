@@ -143,10 +143,10 @@ const AdminAnalytics: React.FC = () => {
       .catch(console.error);
 
     // --- NOVAS ROTAS ---
-    api.get('/api/analytics/marketplaces').then(r => setMarketplaces(r.data)).catch(console.error);
-    api.get('/api/analytics/top-manufacturers').then(r => setTopManufacturers(r.data)).catch(console.error);
-    api.get('/api/analytics/communities-performance').then(r => setCommunitiesData(r.data)).catch(console.error);
-    api.get('/api/analytics/top-demands').then(r => setTopDemands(r.data)).catch(console.error);
+    api.get('/api/analytics/marketplaces').then(r => setMarketplaces(r.data || [])).catch(console.error);
+    api.get('/api/analytics/top-manufacturers').then(r => setTopManufacturers(r.data || [])).catch(console.error);
+    api.get('/api/analytics/communities-performance').then(r => setCommunitiesData(r.data || [])).catch(console.error);
+    api.get('/api/analytics/top-demands').then(r => setTopDemands(r.data || [])).catch(console.error);
   }, []);
 
   // ── tabela ───────────────────────────────────────────────────────────────────
@@ -276,7 +276,7 @@ const AdminAnalytics: React.FC = () => {
               <TrendingUp size={14} /> Volume de Cliques (últimos 7 dias)
             </p>
             <div className="h-[300px] w-full">
-              {!(chartData.revenue || []).length ? (
+              {!(chartData?.revenue || []).length ? (
                 <div className="h-full flex items-center justify-center opacity-20 italic text-sm">Sem dados históricos ainda.</div>
               ) : (
                 <ResponsiveContainer width="100%" height="100%">
@@ -303,7 +303,7 @@ const AdminAnalytics: React.FC = () => {
             <p className="text-[11px] font-black uppercase tracking-widest opacity-40 mb-4 flex items-center gap-2">
               <Smartphone size={14} /> Dispositivos
             </p>
-            {!devices.length ? (
+            {!devices?.length ? (
               <div className="flex-1 flex items-center justify-center opacity-20 italic text-sm">Sem dados.</div>
             ) : (
               <>
@@ -356,7 +356,7 @@ const AdminAnalytics: React.FC = () => {
               <Globe size={14} /> Origem do Tráfego
             </p>
             <div className="space-y-4">
-              {!sources.length ? (
+              {!sources?.length ? (
                 <p className="opacity-20 italic text-sm">Sem dados.</p>
               ) : sources.map((src: any, i: number) => (
                 <div key={i} className="space-y-1.5">
@@ -383,7 +383,7 @@ const AdminAnalytics: React.FC = () => {
           <p className="text-[11px] font-black uppercase tracking-widest opacity-40 mb-4 flex items-center gap-2">
             <Globe size={14} /> Distribuição por Marketplaces
           </p>
-          {!marketplaces.length ? (
+          {!marketplaces?.length ? (
             <div className="flex-1 flex items-center justify-center opacity-20 italic text-sm">Sem dados.</div>
           ) : (
             <div className="flex-1 flex flex-col items-center">
@@ -417,7 +417,7 @@ const AdminAnalytics: React.FC = () => {
           <p className="text-[11px] font-black uppercase tracking-widest opacity-40 mb-4 flex items-center gap-2">
             <TrendingUp size={14} /> Top Montadoras
           </p>
-          {!topManufacturers.length ? (
+          {!topManufacturers?.length ? (
             <div className="flex-1 flex items-center justify-center opacity-20 italic text-sm">Sem dados.</div>
           ) : (
             <div className="h-[250px] w-full">
@@ -441,7 +441,7 @@ const AdminAnalytics: React.FC = () => {
           <p className="text-[11px] font-black uppercase tracking-widest opacity-40 mb-4 flex items-center gap-2">
             <Users size={14} /> Performance de Comunidades
           </p>
-          {!communitiesData.length ? (
+          {!communitiesData?.length ? (
             <div className="flex-1 flex items-center justify-center opacity-20 italic text-sm">Sem conversões via grupos.</div>
           ) : (
             <div className="flex-1 overflow-x-auto custom-scrollbar">
@@ -487,7 +487,7 @@ const AdminAnalytics: React.FC = () => {
             </p>
             <span className="px-2 py-0.5 text-[9px] font-bold bg-red-500/10 text-red-500 rounded uppercase">Atenção</span>
           </div>
-          {!topDemands.length ? (
+          {!topDemands?.length ? (
             <div className="flex-1 flex items-center justify-center opacity-40 italic text-sm text-red-500">Nenhuma busca sem resultado. Ótimo!</div>
           ) : (
             <div className="flex-1 overflow-x-auto custom-scrollbar">
@@ -738,7 +738,7 @@ const AdminAnalytics: React.FC = () => {
                 className="flex items-center gap-1 px-3 py-1.5 rounded-lg text-[11px] font-black bg-[var(--glass2)] border border-[var(--border)] disabled:opacity-20 hover:border-orange/30 transition-all">
                 <ChevronLeft size={12} /> Anterior
               </button>
-              {Array.from({ length: Math.min(5, tableData.pages) }, (_, i) => {
+              {Array.from({ length: Math.min(5, tableData.pages || 0) }, (_, i) => {
                 const start = Math.max(1, Math.min(page - 2, tableData.pages - 4));
                 const p = start + i;
                 return (
