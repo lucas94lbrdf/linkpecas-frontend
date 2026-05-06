@@ -194,7 +194,7 @@ const AdminAnalytics: React.FC = () => {
     setPage(1);
   };
 
-  const activeFilterCount = Object.values(filters).filter(Boolean).length;
+  const activeFilterCount = Object.values(filters ?? {}).filter(Boolean).length
 
   // ── exportar CSV ──────────────────────────────────────────────────────────────
   const exportCsv = () => {
@@ -536,8 +536,8 @@ const AdminAnalytics: React.FC = () => {
               <button
                 onClick={() => setShowFilters(v => !v)}
                 className={`flex items-center gap-2 px-4 py-2 rounded-xl text-[11px] font-black border transition-all ${showFilters || activeFilterCount > 0
-                    ? 'bg-orange/10 text-orange border-orange/30'
-                    : 'bg-[var(--glass2)] border-[var(--border)] hover:border-orange/30'
+                  ? 'bg-orange/10 text-orange border-orange/30'
+                  : 'bg-[var(--glass2)] border-[var(--border)] hover:border-orange/30'
                   }`}
               >
                 <SlidersHorizontal size={14} />

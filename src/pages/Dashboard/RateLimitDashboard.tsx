@@ -63,10 +63,10 @@ const RateLimitDashboard: React.FC = () => {
             <h3 className="text-5xl font-black text-red-500">{(stats.total_blocked_today ?? 0).toLocaleString('pt-BR')}</h3>
           </div>
 
-          {Object.keys(stats.blocked_by_route).length > 0 && (
+          {Object.keys(stats.blocked_by_route ?? {}).length > 0 && (
             <div className="mt-6 space-y-2">
               <p className="text-[10px] font-black uppercase opacity-40">Principais Rotas Alvo</p>
-              {Object.entries(stats.blocked_by_route).map(([route, count]) => (
+              {Object.entries(stats.blocked_by_route ?? {}).map(([route, count]) => (
                 <div key={route} className="flex items-center justify-between text-xs">
                   <span className="font-mono opacity-80">{route}</span>
                   <span className="font-black text-red-400">{count}</span>
