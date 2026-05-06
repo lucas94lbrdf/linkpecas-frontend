@@ -60,7 +60,7 @@ const RateLimitDashboard: React.FC = () => {
             <p className="text-[11px] font-black uppercase tracking-widest text-red-500 flex items-center gap-2 mb-2">
               <AlertTriangle size={14} /> Requisições Bloqueadas (24h)
             </p>
-            <h3 className="text-5xl font-black text-red-500">{stats.total_blocked_today.toLocaleString('pt-BR')}</h3>
+            <h3 className="text-5xl font-black text-red-500">{(stats.total_blocked_today ?? 0).toLocaleString('pt-BR')}</h3>
           </div>
 
           {Object.keys(stats.blocked_by_route).length > 0 && (

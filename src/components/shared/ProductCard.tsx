@@ -132,11 +132,11 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, delay = 0, trackingP
         
         <div className="flex items-baseline gap-2">
           <span className="text-lg font-black text-orange">
-            R$ {product.price.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
+            R$ {(product.price ?? 0).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
           </span>
           {product.oldPrice && (
             <span className="text-[11px] line-through opacity-20">
-              R$ {product.oldPrice.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
+              R$ {(product.oldPrice ?? 0).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
             </span>
           )}
         </div>

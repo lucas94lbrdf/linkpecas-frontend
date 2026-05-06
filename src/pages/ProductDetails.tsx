@@ -392,7 +392,7 @@ const ProductDetails: React.FC = () => {
                       {/* Preço */}
                       <div className="text-right shrink-0">
                         <p className={`font-black text-lg ${opt.is_best ? 'text-emerald-400' : ''}`}>
-                          {opt.price.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
+                          {(opt.price ?? 0).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
                         </p>
                       </div>
 

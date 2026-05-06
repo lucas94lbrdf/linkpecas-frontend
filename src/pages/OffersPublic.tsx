@@ -77,11 +77,11 @@ const ProductCard: React.FC<{ product: Product; query?: string; delay?: number }
         <div className="mt-auto">
           {product.oldPrice && (
             <p className="text-[11px] line-through text-gray-300">
-              R$ {product.oldPrice.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
+              R$ {(product.oldPrice ?? 0).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
             </p>
           )}
           <p className="text-xl font-black text-[#FF6200]">
-            R$ {product.price.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
+            R$ {(product.price ?? 0).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
           </p>
         </div>
       </div>

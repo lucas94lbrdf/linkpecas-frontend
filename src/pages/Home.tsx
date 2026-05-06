@@ -107,11 +107,11 @@ const ProductCardLight: React.FC<{ product: Product; delay?: number }> = ({ prod
         <div className="mt-auto">
           {product.oldPrice && (
             <p className="text-[11px] line-through text-gray-300">
-              R$ {product.oldPrice.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
+              R$ {(product.oldPrice ?? 0).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
             </p>
           )}
           <p className="text-xl font-black text-[#FF6200]">
-            R$ {product.price.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
+            R$ {(product.price ?? 0).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
           </p>
           <p className="text-[10px] text-emerald-600 font-semibold mt-0.5">em 12x sem juros</p>
         </div>

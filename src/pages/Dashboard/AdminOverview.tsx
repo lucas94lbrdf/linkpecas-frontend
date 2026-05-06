@@ -224,10 +224,10 @@ const AdminOverview: React.FC = () => {
                   <p className="text-xs font-bold truncate">{ad.title}</p>
                   <div className="flex items-center gap-3 mt-1">
                     <span className="text-[10px] opacity-40 flex items-center gap-1">
-                      <Eye size={10} /> {ad.views.toLocaleString('pt-BR')} views
+                      <Eye size={10} /> {(ad.views ?? 0).toLocaleString('pt-BR')} views
                     </span>
                     <span className="text-[10px] opacity-40 flex items-center gap-1">
-                      <MousePointer2 size={10} /> {ad.clicks.toLocaleString('pt-BR')} cliques
+                      <MousePointer2 size={10} /> {(ad.clicks ?? 0).toLocaleString('pt-BR')} cliques
                     </span>
                   </div>
                 </div>

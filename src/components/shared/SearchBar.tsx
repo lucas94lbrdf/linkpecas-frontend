@@ -183,7 +183,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
                     {/* Preço */}
                     {hit.price != null && (
                       <span className="text-sm font-black text-[#FF6200] flex-shrink-0">
-                        R$ {hit.price.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
+                        R$ {(hit.price ?? 0).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
                       </span>
                     )}
                   </button>
