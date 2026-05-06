@@ -50,7 +50,7 @@ const RateLimitDashboard: React.FC = () => {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        
+
         {/* Card: Total Bloqueado */}
         <div className="gls p-6 flex flex-col justify-between border border-red-500/20 bg-gradient-to-br from-red-500/5 to-transparent relative overflow-hidden">
           <div className="absolute -right-4 -top-4 opacity-5">
@@ -62,7 +62,7 @@ const RateLimitDashboard: React.FC = () => {
             </p>
             <h3 className="text-5xl font-black text-red-500">{stats.total_blocked_today.toLocaleString('pt-BR')}</h3>
           </div>
-          
+
           {Object.keys(stats.blocked_by_route).length > 0 && (
             <div className="mt-6 space-y-2">
               <p className="text-[10px] font-black uppercase opacity-40">Principais Rotas Alvo</p>
@@ -90,9 +90,9 @@ const RateLimitDashboard: React.FC = () => {
                   <CartesianGrid strokeDasharray="3 3" stroke={GRID_COLOR} vertical={false} />
                   <XAxis dataKey="hour" axisLine={false} tickLine={false} tick={{ fontSize: 10, fill: TICK_COLOR }} />
                   <YAxis axisLine={false} tickLine={false} tick={{ fontSize: 10, fill: TICK_COLOR }} width={30} />
-                  <Tooltip 
-                    cursor={{ fill: 'rgba(239,68,68,0.05)' }} 
-                    contentStyle={{ borderRadius: 12, border: '1px solid rgba(239,68,68,0.2)', background: 'var(--card)' }} 
+                  <Tooltip
+                    cursor={{ fill: 'rgba(239,68,68,0.05)' }}
+                    contentStyle={{ borderRadius: 12, border: '1px solid rgba(239,68,68,0.2)', background: 'var(--card)' }}
                   />
                   <Bar dataKey="count" fill="#ef4444" radius={[4, 4, 0, 0]} maxBarSize={40}>
                     {stats.hourly_stats.map((_, i) => <Cell key={i} fill={COLORS[i % COLORS.length] || '#ef4444'} />)}
@@ -121,7 +121,7 @@ const RateLimitDashboard: React.FC = () => {
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-[var(--border)]">
-                  {stats.top_ips.map((item, i) => (
+                  {stats.top_ips.map((item) => (
                     <tr key={item.ip} className="hover:bg-[var(--glass2)] transition-colors">
                       <td className="py-3 px-4 font-mono font-bold text-red-400">{item.ip}</td>
                       <td className="py-3 px-4 text-right font-black">{item.count}</td>

@@ -30,21 +30,21 @@ interface Product {
 
 /* ─── constantes ─────────────────────────────────────────────────────────── */
 const CATEGORIES = [
-  { label: 'Peças',        icon: Wrench,     color: '#FF6200', bg: '#FFF3EC', path: '/ofertas?cat=pecas' },
-  { label: 'Estética',     icon: Sparkles,   color: '#9333ea', bg: '#F5F0FF', path: '/ofertas?cat=estetica' },
-  { label: 'Performance',  icon: Gauge,      color: '#e11d48', bg: '#FFF0F3', path: '/ofertas?cat=performance' },
-  { label: 'Som e Mídia',  icon: Headphones, color: '#0ea5e9', bg: '#EFF8FF', path: '/ofertas?cat=som' },
-  { label: 'Iluminação',   icon: Lightbulb,  color: '#f59e0b', bg: '#FFFBEB', path: '/ofertas?cat=iluminacao' },
-  { label: 'Ferramentas',  icon: Zap,        color: '#10b981', bg: '#ECFDF5', path: '/ofertas?cat=ferramentas' },
-  { label: 'Pneus',        icon: CarFront,   color: '#64748b', bg: '#F8FAFC', path: '/ofertas?cat=pneus' },
-  { label: 'Universal',    icon: Package,    color: '#6366f1', bg: '#EEF2FF', path: '/ofertas' },
+  { label: 'Peças', icon: Wrench, color: '#FF6200', bg: '#FFF3EC', path: '/ofertas?cat=pecas' },
+  { label: 'Estética', icon: Sparkles, color: '#9333ea', bg: '#F5F0FF', path: '/ofertas?cat=estetica' },
+  { label: 'Performance', icon: Gauge, color: '#e11d48', bg: '#FFF0F3', path: '/ofertas?cat=performance' },
+  { label: 'Som e Mídia', icon: Headphones, color: '#0ea5e9', bg: '#EFF8FF', path: '/ofertas?cat=som' },
+  { label: 'Iluminação', icon: Lightbulb, color: '#f59e0b', bg: '#FFFBEB', path: '/ofertas?cat=iluminacao' },
+  { label: 'Ferramentas', icon: Zap, color: '#10b981', bg: '#ECFDF5', path: '/ofertas?cat=ferramentas' },
+  { label: 'Pneus', icon: CarFront, color: '#64748b', bg: '#F8FAFC', path: '/ofertas?cat=pneus' },
+  { label: 'Universal', icon: Package, color: '#6366f1', bg: '#EEF2FF', path: '/ofertas' },
 ];
 
 const TRUST = [
-  { icon: Truck,        label: 'Frete Grátis',     sub: 'em milhares de produtos' },
-  { icon: ShieldCheck,  label: 'Compra Garantida',  sub: 'proteção total' },
-  { icon: Star,         label: 'Melhores Preços',   sub: 'comparados em tempo real' },
-  { icon: Headphones,   label: 'Suporte 24h',       sub: 'estamos aqui por você' },
+  { icon: Truck, label: 'Frete Grátis', sub: 'em milhares de produtos' },
+  { icon: ShieldCheck, label: 'Compra Garantida', sub: 'proteção total' },
+  { icon: Star, label: 'Melhores Preços', sub: 'comparados em tempo real' },
+  { icon: Headphones, label: 'Suporte 24h', sub: 'estamos aqui por você' },
 ];
 
 const YEARS = Array.from({ length: 35 }, (_, i) => (new Date().getFullYear() + 1 - i).toString());
@@ -136,31 +136,24 @@ const Home: React.FC = () => {
   const [manufacturerId, setManufacturerId] = useState('');
   const [modelId, setModelId] = useState('');
   const [year, setYear] = useState('');
-  const [query, setQuery] = useState('');
-
   useEffect(() => {
-    vehicleService.listManufacturers().then(setManufacturers).catch(() => {});
+    vehicleService.listManufacturers().then(setManufacturers).catch(() => { });
   }, []);
 
   useEffect(() => {
     if (!manufacturerId) { setModels([]); setModelId(''); return; }
-    vehicleService.listModelsByManufacturer(manufacturerId).then(setModels).catch(() => {});
+    vehicleService.listModelsByManufacturer(manufacturerId).then(setModels).catch(() => { });
   }, [manufacturerId]);
 
   useEffect(() => {
     api.get('/api/public/ads/trending')
       .then(res => setProducts(res.data || []))
-      .catch(() => {})
+      .catch(() => { })
       .finally(() => setLoading(false));
   }, []);
 
   const selectedMfg = useMemo(() => manufacturers.find(m => m.id === manufacturerId), [manufacturers, manufacturerId]);
   const selectedModel = useMemo(() => models.find(m => m.id === modelId), [models, modelId]);
-
-  const handleSearch = () => {
-    if (query.trim()) { navigate(`/ofertas?q=${encodeURIComponent(query.trim())}`); return; }
-    navigate('/ofertas');
-  };
 
   const handleVehicleSearch = () => {
     if (!selectedMfg || !selectedModel) return;

@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { Search, X, Clock, Zap } from 'lucide-react';
+import { Search, X, Zap } from 'lucide-react';
 import api from '../../services/api';
 import { useNavigate } from 'react-router-dom';
 

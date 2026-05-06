@@ -239,7 +239,7 @@ const AdminLinkHealth: React.FC = () => {
                   <YAxis domain={[0, 100]} axisLine={false} tickLine={false} tick={{ fontSize: 9, fill: 'rgba(255,255,255,0.3)' }}
                     tickFormatter={v => `${v}%`} />
                   <Tooltip contentStyle={{ backgroundColor: 'rgba(8,12,21,0.95)', borderColor: 'rgba(255,255,255,0.1)', borderRadius: 12 }}
-                    formatter={(v: number) => [`${v}%`, 'Saúde']} />
+                    formatter={(v: any) => [`${v}%`, 'Saúde']} />
                   <ReferenceLine y={80} stroke="#ef4444" strokeDasharray="6 4" strokeWidth={1.5} label={{ value: '80%', fill: '#ef4444', fontSize: 9, position: 'right' }} />
                   <Area type="monotone" dataKey="health_rate" stroke="#10b981" fillOpacity={1} fill="url(#colorHealth)" strokeWidth={2.5} />
                 </AreaChart>

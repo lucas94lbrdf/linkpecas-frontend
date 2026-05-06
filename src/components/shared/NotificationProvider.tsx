@@ -1,9 +1,11 @@
 import React, { useEffect } from 'react';
 import { useAuthStore } from '../../store/useAuthStore';
 import Swal from 'sweetalert2';
+import Cookies from 'js-cookie';
 
 export const NotificationProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const { user, token, isAuthenticated } = useAuthStore();
+  const { isAuthenticated } = useAuthStore();
+  const token = Cookies.get('access_token');
 
   useEffect(() => {
     if (!isAuthenticated || !token) return;
@@ -17,7 +19,7 @@ export const NotificationProvider: React.FC<{ children: React.ReactNode }> = ({ 
 
     // In dev:
     if (wsUrl.includes('localhost:5173') || wsUrl.includes('localhost:3000')) {
-        wsUrl = 'ws://localhost:8000';
+      wsUrl = 'ws://localhost:8000';
     }
 
     const ws = new WebSocket(`${wsUrl}/ws/notifications?token=${token}`);
