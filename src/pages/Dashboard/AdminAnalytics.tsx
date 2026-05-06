@@ -108,12 +108,28 @@ const GRID_COLOR = 'rgba(100,116,139,0.12)';
 
 // ─── componente principal ─────────────────────────────────────────────────────
 
+const HOURLY_PERIODS = [
+  { key: 'today', label: 'Hoje' },
+  { key: 'yesterday', label: 'Ontem' },
+  { key: '3d', label: '-3d' },
+  { key: '7d', label: '-7d' },
+  { key: '10d', label: '-10d' },
+  { key: '15d', label: '-15d' },
+  { key: '30d', label: '-30d' },
+] as const;
+
+type HourlyPeriod = typeof HOURLY_PERIODS[number]['key'];
+
 const AdminAnalytics: React.FC = () => {
   const [chartData, setChartData] = useState<ChartData | null>(null);
   const [chartLoading, setChartLoading] = useState(true);
   const [tableData, setTableData] = useState<TableResponse | null>(null);
   const [tableLoading, setTableLoading] = useState(true);
   const [filterOptions, setFilterOptions] = useState<FilterOptions | null>(null);
+
+  const [hourlyPeriod, setHourlyPeriod] = useState<HourlyPeriod>('7d');
+  const [hourlyData, setHourlyData] = useState<{ hour: string; visits: number }[]>([]);
+  const [hourlyLoading, setHourlyLoading] = useState(false);
 
   // --- NOVOS ESTADOS ---
   const [marketplaces, setMarketplaces] = useState<{ name: string, value: number }[]>([]);
@@ -130,6 +146,7 @@ const AdminAnalytics: React.FC = () => {
   });
 
   const searchTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const [lastRefreshed, setLastRefreshed] = useState<Date>(new Date());
 
   // ── gráficos + filtros ───────────────────────────────────────────────────────
   useEffect(() => {
@@ -149,9 +166,16 @@ const AdminAnalytics: React.FC = () => {
     api.get('/api/analytics/top-demands').then(r => setTopDemands(r.data || [])).catch(console.error);
   }, []);
 
+  useEffect(() => {
+    setHourlyLoading(true);
+    api.get(`/api/admin/analytics/hourly?period=${hourlyPeriod}`)
+      .then(r => setHourlyData(r.data || []))
+      .catch(console.error)
+      .finally(() => setHourlyLoading(false));
+  }, [hourlyPeriod]);
+
   // ── tabela ───────────────────────────────────────────────────────────────────
   const fetchTable = useCallback(() => {
-    setTableLoading(true);
     const p = new URLSearchParams({ page: String(page), limit: '50', sort_by: sortBy, sort_dir: sortDir });
     if (filters.search) p.set('search', filters.search);
     if (filters.seller) p.set('seller', filters.seller);
@@ -161,13 +185,20 @@ const AdminAnalytics: React.FC = () => {
     if (filters.date_from) p.set('date_from', filters.date_from);
     if (filters.date_to) p.set('date_to', filters.date_to);
 
+    setTableLoading(true);
     api.get(`/api/admin/analytics/clicks?${p}`)
-      .then(r => setTableData(r.data))
+      .then(r => { setTableData(r.data); setLastRefreshed(new Date()); })
       .catch(console.error)
       .finally(() => setTableLoading(false));
   }, [page, sortBy, sortDir, filters]);
 
   useEffect(() => { fetchTable(); }, [fetchTable]);
+
+  // ── auto-refresh tabela (30s) ────────────────────────────────────────────────
+  useEffect(() => {
+    const id = setInterval(() => fetchTable(), 30_000);
+    return () => clearInterval(id);
+  }, [fetchTable]);
 
   // ── handlers ─────────────────────────────────────────────────────────────────
   const handleSearch = (value: string) => {
@@ -334,19 +365,42 @@ const AdminAnalytics: React.FC = () => {
 
           {/* Horários de Pico */}
           <div className="lg:col-span-2 gls p-6 min-w-0">
-            <p className="text-[11px] font-black uppercase tracking-widest opacity-40 mb-6 flex items-center gap-2">
-              <Clock size={14} /> Atividade por Horário
-            </p>
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6">
+              <p className="text-[11px] font-black uppercase tracking-widest opacity-40 flex items-center gap-2">
+                <Clock size={14} /> Atividade por Horário
+              </p>
+              <div className="flex items-center gap-1 flex-wrap">
+                {HOURLY_PERIODS.map(({ key, label }) => (
+                  <button
+                    key={key}
+                    onClick={() => setHourlyPeriod(key)}
+                    className={`px-2.5 py-1 rounded-lg text-[10px] font-black border transition-all ${
+                      hourlyPeriod === key
+                        ? 'bg-orange text-white border-orange shadow-sm shadow-orange/20'
+                        : 'bg-[var(--glass2)] border-[var(--border)] hover:border-orange/40 opacity-60 hover:opacity-100'
+                    }`}
+                  >
+                    {label}
+                  </button>
+                ))}
+              </div>
+            </div>
             <div className="h-[200px]">
-              <ResponsiveContainer width="100%" height="100%">
-                <BarChart data={chartData.hourly || []}>
-                  <CartesianGrid strokeDasharray="3 3" stroke={GRID_COLOR} vertical={false} />
-                  <XAxis dataKey="hour" axisLine={false} tickLine={false} tick={{ fontSize: 9, fill: TICK_COLOR }} interval={2} />
-                  <YAxis axisLine={false} tickLine={false} tick={{ fontSize: 9, fill: TICK_COLOR }} width={24} />
-                  <Tooltip contentStyle={{ borderRadius: 12, border: '1px solid rgba(100,116,139,0.2)', background: 'var(--card)', color: 'var(--fg)' }} cursor={{ fill: 'rgba(100,116,139,0.06)' }} />
-                  <Bar dataKey="visits" fill="#ff6b35" radius={[3, 3, 0, 0]} maxBarSize={18} />
-                </BarChart>
-              </ResponsiveContainer>
+              {hourlyLoading ? (
+                <div className="h-full flex items-center justify-center opacity-30">
+                  <Loader2 size={24} className="animate-spin" />
+                </div>
+              ) : (
+                <ResponsiveContainer width="100%" height="100%">
+                  <BarChart data={hourlyData}>
+                    <CartesianGrid strokeDasharray="3 3" stroke={GRID_COLOR} vertical={false} />
+                    <XAxis dataKey="hour" axisLine={false} tickLine={false} tick={{ fontSize: 9, fill: TICK_COLOR }} interval={2} />
+                    <YAxis axisLine={false} tickLine={false} tick={{ fontSize: 9, fill: TICK_COLOR }} width={24} />
+                    <Tooltip contentStyle={{ borderRadius: 12, border: '1px solid rgba(100,116,139,0.2)', background: 'var(--card)', color: 'var(--fg)' }} cursor={{ fill: 'rgba(100,116,139,0.06)' }} />
+                    <Bar dataKey="visits" fill="#ff6b35" radius={[3, 3, 0, 0]} maxBarSize={18} />
+                  </BarChart>
+                </ResponsiveContainer>
+              )}
             </div>
           </div>
 
@@ -530,6 +584,10 @@ const AdminAnalytics: React.FC = () => {
                 {tableData
                   ? `${(tableData.total ?? 0).toLocaleString('pt-BR')} anúncios encontrados`
                   : 'Carregando...'}
+                {' · '}
+                <span title="Atualizado automaticamente a cada 30s">
+                  atualizado às {lastRefreshed.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit', second: '2-digit' })}
+                </span>
               </p>
             </div>
             <div className="flex items-center gap-2">

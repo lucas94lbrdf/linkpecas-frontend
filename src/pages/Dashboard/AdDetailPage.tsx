@@ -4,7 +4,7 @@ import { useQuery } from '@tanstack/react-query';
 import {
   ArrowLeft, Eye, MousePointerClick, TrendingUp, ExternalLink,
   Copy, Calendar, MapPin, Tag, Globe, Shield, Clock, Package,
-  Loader2, Edit3, BarChart3, Users, Truck
+  Loader2, Edit3, BarChart3, Users, Truck, Smartphone, Monitor, Tablet
 } from 'lucide-react';
 import api from '../../services/api';
 import Swal from 'sweetalert2';
@@ -17,6 +17,7 @@ const AdDetailPage: React.FC = () => {
     queryKey: ['ad-detail', id],
     queryFn: async () => { const res = await api.get(`/api/ads/${id}`); return res.data; },
     enabled: !!id,
+    refetchInterval: 30_000,
   });
 
   const { data: clicks } = useQuery({
@@ -26,6 +27,7 @@ const AdDetailPage: React.FC = () => {
       catch { return { clicks: [], total: 0 }; }
     },
     enabled: !!id,
+    refetchInterval: 30_000,
   });
 
   const copyToClipboard = (text: string) => {
@@ -36,7 +38,7 @@ const AdDetailPage: React.FC = () => {
   if (isLoading) return <div className="min-h-[60vh] flex items-center justify-center"><Loader2 className="animate-spin text-orange" size={48} /></div>;
   if (!ad) return <div className="p-20 text-center opacity-40">Anúncio não encontrado.</div>;
 
-  const trackingUrl = `${window.location.origin}/r/${ad.slug || id}`;
+  const trackingUrl = `${window.location.origin}/product/${ad.short_code || ad.slug || id}`;
   const ctr = ad.views_count > 0 ? ((ad.clicks_count / ad.views_count) * 100).toFixed(1) : '0.0';
 
   const statusColors: Record<string, string> = {
@@ -173,27 +175,51 @@ const AdDetailPage: React.FC = () => {
       </div>
 
       {/* Cliques */}
-      {clicks?.clicks?.length > 0 && (
-        <div className="gls p-5 mt-6 space-y-3">
-          <h3 className="font-black text-sm flex items-center gap-2">
-            <MousePointerClick size={15} className="text-emerald-500" /> Últimos Cliques
+      <div className="gls p-5 mt-6 space-y-3">
+        <h3 className="font-black text-sm flex items-center gap-2">
+          <MousePointerClick size={15} className="text-emerald-500" /> Últimos Cliques
+          {clicks && (
             <span className="text-[10px] font-bold opacity-30 ml-auto">{clicks.total} total</span>
-          </h3>
+          )}
+        </h3>
+        {!clicks?.clicks?.length ? (
+          <div className="py-8 text-center opacity-30">
+            <MousePointerClick size={28} className="mx-auto mb-2" />
+            <p className="text-xs italic">Nenhum clique registrado ainda.</p>
+          </div>
+        ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-left">
               <thead>
                 <tr className="border-b border-[var(--border)]">
                   <th className="px-3 py-2 text-[9px] font-black uppercase tracking-widest opacity-40">Data</th>
-                  <th className="px-3 py-2 text-[9px] font-black uppercase tracking-widest opacity-40">Fonte</th>
+                  <th className="px-3 py-2 text-[9px] font-black uppercase tracking-widest opacity-40">Dispositivo</th>
+                  <th className="px-3 py-2 text-[9px] font-black uppercase tracking-widest opacity-40">Origem</th>
+                  <th className="px-3 py-2 text-[9px] font-black uppercase tracking-widest opacity-40">Cidade/UF</th>
                   <th className="px-3 py-2 text-[9px] font-black uppercase tracking-widest opacity-40">Campanha</th>
                   <th className="px-3 py-2 text-[9px] font-black uppercase tracking-widest opacity-40">IP</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-[var(--border)]">
-                {clicks.clicks.slice(0, 15).map((click: any, i: number) => (
+                {clicks.clicks.map((click: any, i: number) => (
                   <tr key={i} className="hover:bg-[var(--bg2)] transition-colors">
-                    <td className="px-3 py-2 text-[11px]">{click.clicked_at ? new Date(click.clicked_at).toLocaleString('pt-BR') : '—'}</td>
-                    <td className="px-3 py-2 text-[11px] font-mono opacity-60">{click.source || '—'}</td>
+                    <td className="px-3 py-2 text-[11px] whitespace-nowrap">{click.clicked_at ? new Date(click.clicked_at).toLocaleString('pt-BR') : '—'}</td>
+                    <td className="px-3 py-2">
+                      {click.device ? (
+                        <span className="flex items-center gap-1 text-[11px]">
+                          {click.device === 'mobile' ? <Smartphone size={11} className="text-blue-400" /> : click.device === 'tablet' ? <Tablet size={11} className="text-purple-400" /> : <Monitor size={11} className="text-slate-400" />}
+                          <span className="capitalize opacity-70">{click.device}</span>
+                        </span>
+                      ) : <span className="opacity-20 text-[11px]">—</span>}
+                    </td>
+                    <td className="px-3 py-2">
+                      {click.source ? (
+                        <span className="px-2 py-0.5 rounded bg-blue-500/10 text-blue-400 text-[10px] font-black">{click.source}</span>
+                      ) : <span className="opacity-20 text-[11px]">Direto</span>}
+                    </td>
+                    <td className="px-3 py-2 text-[11px] opacity-60 whitespace-nowrap">
+                      {click.city ? `${click.city}${click.state ? `, ${click.state}` : ''}` : '—'}
+                    </td>
                     <td className="px-3 py-2 text-[11px] font-mono opacity-60">{click.campaign || '—'}</td>
                     <td className="px-3 py-2 text-[10px] font-mono opacity-30">{click.ip_hash || '—'}</td>
                   </tr>
@@ -201,8 +227,8 @@ const AdDetailPage: React.FC = () => {
               </tbody>
             </table>
           </div>
-        </div>
-      )}
+        )}
+      </div>
 
       {/* Galeria */}
       {ad.image_urls?.length > 0 && (
