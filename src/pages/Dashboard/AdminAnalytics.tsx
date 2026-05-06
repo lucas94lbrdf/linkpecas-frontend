@@ -271,11 +271,11 @@ const AdminAnalytics: React.FC = () => {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
 
           {/* Volume de Cliques */}
-          <div className="lg:col-span-2 gls p-6 flex flex-col">
+          <div className="lg:col-span-2 gls p-6 flex flex-col min-w-0">
             <p className="text-[11px] font-black uppercase tracking-widest opacity-40 mb-6 flex items-center gap-2">
               <TrendingUp size={14} /> Volume de Cliques (últimos 7 dias)
             </p>
-            <div className="h-[300px] w-full">
+            <div className="h-[300px] w-full min-w-0">
               {!(chartData?.revenue || []).length ? (
                 <div className="h-full flex items-center justify-center opacity-20 italic text-sm">Sem dados históricos ainda.</div>
               ) : (
@@ -299,7 +299,7 @@ const AdminAnalytics: React.FC = () => {
           </div>
 
           {/* Dispositivos */}
-          <div className="gls p-6 flex flex-col">
+          <div className="gls p-6 flex flex-col min-w-0">
             <p className="text-[11px] font-black uppercase tracking-widest opacity-40 mb-4 flex items-center gap-2">
               <Smartphone size={14} /> Dispositivos
             </p>
@@ -307,7 +307,7 @@ const AdminAnalytics: React.FC = () => {
               <div className="flex-1 flex items-center justify-center opacity-20 italic text-sm">Sem dados.</div>
             ) : (
               <>
-                <div className="h-[160px]">
+                <div className="h-[160px] min-w-0">
                   <ResponsiveContainer width="100%" height="100%">
                     <PieChart>
                       <Pie data={devices} innerRadius={50} outerRadius={70} paddingAngle={4} dataKey="value" strokeWidth={0}>
@@ -333,7 +333,7 @@ const AdminAnalytics: React.FC = () => {
           </div>
 
           {/* Horários de Pico */}
-          <div className="lg:col-span-2 gls p-6">
+          <div className="lg:col-span-2 gls p-6 min-w-0">
             <p className="text-[11px] font-black uppercase tracking-widest opacity-40 mb-6 flex items-center gap-2">
               <Clock size={14} /> Atividade por Horário
             </p>
@@ -379,7 +379,7 @@ const AdminAnalytics: React.FC = () => {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
 
         {/* Card 1: Marketplaces (Donut Chart) */}
-        <div className="gls p-6 flex flex-col">
+        <div className="gls p-6 flex flex-col min-w-0">
           <p className="text-[11px] font-black uppercase tracking-widest opacity-40 mb-4 flex items-center gap-2">
             <Globe size={14} /> Distribuição por Marketplaces
           </p>
@@ -413,7 +413,7 @@ const AdminAnalytics: React.FC = () => {
         </div>
 
         {/* Card 2: Top Montadoras (Bar Chart Horizontal) */}
-        <div className="gls p-6 flex flex-col">
+        <div className="gls p-6 flex flex-col min-w-0">
           <p className="text-[11px] font-black uppercase tracking-widest opacity-40 mb-4 flex items-center gap-2">
             <TrendingUp size={14} /> Top Montadoras
           </p>

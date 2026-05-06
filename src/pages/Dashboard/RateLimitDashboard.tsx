@@ -77,16 +77,16 @@ const RateLimitDashboard: React.FC = () => {
         </div>
 
         {/* Gráfico: Bloqueios por Hora */}
-        <div className="gls p-6 lg:col-span-2 flex flex-col">
+        <div className="gls p-6 lg:col-span-2 flex flex-col min-w-0">
           <p className="text-[11px] font-black uppercase tracking-widest opacity-40 mb-6 flex items-center gap-2">
             <Clock size={14} /> Bloqueios por Hora
           </p>
-          <div className="flex-1 h-[250px]">
-            {stats.hourly_stats.length === 0 ? (
+          <div className="flex-1 h-[250px] min-w-0">
+            {(stats.hourly_stats || []).length === 0 ? (
               <div className="h-full flex items-center justify-center opacity-20 text-sm font-bold">Sem bloqueios recentes.</div>
             ) : (
               <ResponsiveContainer width="100%" height="100%">
-                <BarChart data={stats.hourly_stats}>
+                <BarChart data={stats.hourly_stats || []}>
                   <CartesianGrid strokeDasharray="3 3" stroke={GRID_COLOR} vertical={false} />
                   <XAxis dataKey="hour" axisLine={false} tickLine={false} tick={{ fontSize: 10, fill: TICK_COLOR }} />
                   <YAxis axisLine={false} tickLine={false} tick={{ fontSize: 10, fill: TICK_COLOR }} width={30} />
@@ -95,7 +95,7 @@ const RateLimitDashboard: React.FC = () => {
                     contentStyle={{ borderRadius: 12, border: '1px solid rgba(239,68,68,0.2)', background: 'var(--card)' }}
                   />
                   <Bar dataKey="count" fill="#ef4444" radius={[4, 4, 0, 0]} maxBarSize={40}>
-                    {stats.hourly_stats.map((_, i) => <Cell key={i} fill={COLORS[i % COLORS.length] || '#ef4444'} />)}
+                    {(stats.hourly_stats || []).map((_, i) => <Cell key={i} fill={COLORS[i % COLORS.length] || '#ef4444'} />)}
                   </Bar>
                 </BarChart>
               </ResponsiveContainer>
@@ -108,7 +108,7 @@ const RateLimitDashboard: React.FC = () => {
           <p className="text-[11px] font-black uppercase tracking-widest opacity-40 mb-4 flex items-center gap-2">
             <Hash size={14} /> Top 10 IPs Bloqueados
           </p>
-          {stats.top_ips.length === 0 ? (
+          {(stats.top_ips || []).length === 0 ? (
             <p className="opacity-20 italic text-sm text-center py-6 font-bold">Nenhum IP bloqueado.</p>
           ) : (
             <div className="overflow-x-auto">
@@ -121,7 +121,7 @@ const RateLimitDashboard: React.FC = () => {
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-[var(--border)]">
-                  {stats.top_ips.map((item) => (
+                  {(stats.top_ips || []).map((item) => (
                     <tr key={item.ip} className="hover:bg-[var(--glass2)] transition-colors">
                       <td className="py-3 px-4 font-mono font-bold text-red-400">{item.ip}</td>
                       <td className="py-3 px-4 text-right font-black">{item.count}</td>
